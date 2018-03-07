@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view"
+    >
+    <item
+        android:enabled="false"
+        android:title="@string/choose_a_country" />
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nigeria"
+           android:title="NIGERIA"
+            />
+        <item
+            android:id="@+id/usa"
+            android:title="USA" />
+        <item
+            android:id="@+id/france"
+            android:title="FRANCE" />
+        <item
+            android:id="@+id/saudi"
+            android:title="SAUDI ARABIA" />
+        <item
+                android:id="@+id/brazil"
+                android:title="BRAZIL" />
+            <item
+                android:id="@+id/zimbabwe"
+                android:title="ZIMBABWE" />
+        <item
+            android:id="@+id/germany"
+            android:title="GERMANY" />
+        <item
+            android:id="@+id/finland"
+            android:title="FINLAND" />
+        <item
+            android:id="@+id/italy"
+            android:title="ITALY" />
+
+        <item
+            android:id="@+id/japan"
+            android:title="JAPAN" />
+        <item
+            android:id="@+id/jordan"
+            android:title="JORDAN" />
+        <item
+            android:id="@+id/israel"
+            android:title="ISRAEL" />
+        <item
+            android:id="@+id/sudan"
+            android:title="SUDAN" />
+        <item
+            android:id="@+id/spain"
+            android:title="SPAIN" />
+        <item
+            android:id="@+id/sweden"
+            android:title="SWEDEN" />
+        <item
+            android:id="@+id/pakistan"
+            android:title="PAKISTAN" />
+        <item
+            android:id="@+id/qatar"
+            android:title="QATAR" />
+        <item
+            android:id="@+id/india"
+            android:title="INDIA" />
+    </group>
+
+</menu>

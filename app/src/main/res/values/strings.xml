@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">WORLD NEWS</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="business">BUSINESS</string>
+    <string name="music">MUSIC</string>
+    <string name="video">VIDEO</string>
+    <string name="sport">SPORT</string>
+    <string name="politics">POLITICS</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="technology">Technology</string>
+    <string name="fashion">Fashion</string>
+    <string name="share">Share</string>
+    <string name="choose_a_country">CHOOSE A COUNTRY</string>
+</resources>
