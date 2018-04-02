@@ -1,11 +1,17 @@
 package com.example.abdul_wadudmusa.drawer.fragments;
 
 
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
+import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,23 +22,26 @@ import android.widget.ProgressBar;
 import com.example.abdul_wadudmusa.drawer.News;
 import com.example.abdul_wadudmusa.drawer.NewsAdapter;
 import com.example.abdul_wadudmusa.drawer.R;
+import com.example.abdul_wadudmusa.drawer.RecyclerAdapter;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
-import static com.example.abdul_wadudmusa.drawer.fragments.Connection.createUrl;
-import static com.example.abdul_wadudmusa.drawer.fragments.Connection.extractFeatureFromJson;
-import static com.example.abdul_wadudmusa.drawer.fragments.Connection.makeHttpRequest;
+import static com.example.abdul_wadudmusa.drawer.Connection.createUrl;
+import static com.example.abdul_wadudmusa.drawer.Connection.extractFeatureFromJson;
+import static com.example.abdul_wadudmusa.drawer.Connection.makeHttpRequest;
 import static com.example.abdul_wadudmusa.drawer.MainActivity.Country;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Politics extends Fragment {
-    private static ArrayList<News> wadva;
-    private static ProgressBar wad;
+public class Politics extends Fragment implements android.support.v4.app.LoaderManager.LoaderCallbacks<List<News>> {
+     ArrayList<News> wadva=new ArrayList<>();
+     ProgressBar wad;
+    RecyclerView w;
 
     public Politics() {
        wadva= new ArrayList<>();
@@ -43,24 +52,47 @@ public class Politics extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View k = inflater.inflate(R.layout.politics,container,false);
-        ListView w = k.findViewById(R.id.listforpolitics);
         wad= k.findViewById(R.id.progressbarp);
-        new Politics.connectifyfortech().execute();
-        w.setAdapter(new NewsAdapter(getContext().getApplicationContext(),wadva));
-        w.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                News news =wadva.get(position);
-                Intent wadva = new Intent(Intent.ACTION_VIEW);
-                wadva.setData(Uri.parse(news.getWebpage()));
-                startActivity(wadva);
-            }
-        });
+        w = k.findViewById(R.id.listforpolitics);
+
+        LinearLayoutManager Politics =new LinearLayoutManager(getContext());
+        w.setLayoutManager(Politics);
+        RecyclerAdapter PoliticsAdapter=new RecyclerAdapter(wadva,getContext());
+        w.setAdapter(PoliticsAdapter);
+        getLoaderManager().initLoader(5,null, this).forceLoad();
+        w.setHasFixedSize(true);
+        PoliticsAdapter.notifyDataSetChanged();
         return k;
     }
-    public  class connectifyfortech extends AsyncTask<URL,Void,ArrayList<News>> {
+
+    @Override
+    public android.support.v4.content.Loader<List<News>> onCreateLoader(int id, Bundle args) {
+        wad.setVisibility(View.VISIBLE);
+        return new connectifyfortech(getContext());
+    }
+
+    @Override
+    public void onLoadFinished(android.support.v4.content.Loader<List<News>> loader, List<News> data) {
+        wad.setVisibility(View.INVISIBLE);
+        wadva.clear();
+        wadva.addAll(data);
+
+
+    }
+
+    @Override
+    public void onLoaderReset(android.support.v4.content.Loader<List<News>> loader) {
+
+    }
+
+
+    public  static class connectifyfortech extends android.support.v4.content.AsyncTaskLoader<List<News>> {
+        public connectifyfortech(Context context) {
+            super(context);
+        }
+
         @Override
-        protected ArrayList<News> doInBackground(URL... urls) {
+        public List<News> loadInBackground() {
             URL url =createUrl("https://newsapi.org/v2/top-headlines?country=" +Country+"&language=english&category=politics&apiKey=ac31ae40aa5e47e58965e335c63ec110");
             String jsonResponse = "";
             try {
@@ -68,18 +100,8 @@ public class Politics extends Fragment {
             } catch (IOException e) {
                 // TODO Handle the IOException
             }
-            return extractFeatureFromJson(jsonResponse);
-        }
+            return  extractFeatureFromJson(jsonResponse);
 
-
-        @Override
-        protected void onPostExecute(ArrayList<News> news) {
-            publishProgress();
-            if (news == null) {
-                return;
-            }
-            wadva=news;
-            wad.setVisibility(View.GONE);
         }
     }
     }

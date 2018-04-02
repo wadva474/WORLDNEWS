@@ -1,10 +1,13 @@
 package com.example.abdul_wadudmusa.drawer;
 
+import android.content.AsyncTaskLoader;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
+
+import com.example.abdul_wadudmusa.drawer.News;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,19 +22,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.abdul_wadudmusa.drawer.MainActivity.Country;
-import static com.example.abdul_wadudmusa.drawer.Business.business;
-import static com.example.abdul_wadudmusa.drawer.Business.waddy;
 
 
-public  class Connection extends AsyncTask<URL,Void,ArrayList<News>>{
-    public Connection() {
 
+public class  Connection extends android.support.v4.content.AsyncTaskLoader<List<News>> {
+    public Connection(Context context) {
+        super(context);
     }
-
     @Override
-    protected ArrayList<News> doInBackground(URL... urls) {
+    public List<News> loadInBackground() {
         URL url = createUrl("https://newsapi.org/v2/top-headlines?country=" +Country+"&language=english&category=business&apiKey=ac31ae40aa5e47e58965e335c63ec110");
 
         // Perform HTTP request to the URL and receive a JSON response back
@@ -46,24 +48,8 @@ public  class Connection extends AsyncTask<URL,Void,ArrayList<News>>{
 
         // Return the {@link Event} object as the result fo the {@link TsunamiAsyncTask}
         return extractFeatureFromJson(jsonResponse);
+
     }
-    @Override
-    protected void onPostExecute(ArrayList<News> news) {
-        if (news == null) {
-            return;
-
-        }
-
-        business=news;
-        waddy.setVisibility(View.GONE);
-    }
-
-    @Override
-    protected void onProgressUpdate(Void... values) {
-        publishProgress();
-        super.onProgressUpdate(values);
-    }
-
     public static URL createUrl(String stringUrl) {
         URL url = null;
         try {
@@ -90,10 +76,7 @@ public  class Connection extends AsyncTask<URL,Void,ArrayList<News>>{
         InputStream inputStream = null;
         try {
             urlConnection = (HttpURLConnection)url.openConnection();
-            urlConnection.setReadTimeout(10000 /* milliseconds */);
-           urlConnection.setConnectTimeout(10000 /* milliseconds */);
             urlConnection.setRequestMethod("GET");
-            urlConnection.setUseCaches(false);
             urlConnection.connect();
             if (urlConnection.getResponseCode() == 200) {
                 inputStream = urlConnection.getInputStream();

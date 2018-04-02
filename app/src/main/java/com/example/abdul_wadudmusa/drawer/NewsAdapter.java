@@ -1,42 +1,33 @@
 package com.example.abdul_wadudmusa.drawer;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
+import android.content.Intent;
+import android.net.Uri;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.squareup.picasso.Picasso;
+
 
 import java.util.ArrayList;
-public class NewsAdapter extends ArrayAdapter<News> {
-    public NewsAdapter(@NonNull Context context, ArrayList<News> news) {
-        super(context, 0,news);
-    }
+import com.squareup.picasso.Picasso;
 
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View k = convertView;
-        if (k == null) {
-            k = LayoutInflater.from(parent.getContext()).inflate(R.layout.xmlforlistview, parent, false);
-        }
-        News current =getItem(position);
-        ImageView a = k.findViewById(R.id.imageview);
-        try {
-            Picasso.with(parent.getContext()).load(current.getImageUrl()).into(a);
-        }
-        catch (Exception e){
-            Log.e("ERROR","Error loading image url");
-        }
+public class NewsAdapter extends RecyclerView.ViewHolder {
+    TextView mSource,mDate,mContent;
+    ImageView mImage;
+    CardView mCardView;
 
-        TextView b= k.findViewById(R.id.Textview);
-        b.setText(current.getTopic());
-        return k;
+    public NewsAdapter(View itemView) {
+        super(itemView);
+        this.mSource =itemView.findViewById(R.id.textView3);
+        this.mDate = itemView.findViewById(R.id.textView4);
+        this.mContent = itemView.findViewById(R.id.Textview);
+        this.mCardView = itemView.findViewById(R.id.cardView);
+        this.mImage=itemView.findViewById(R.id.imageview);
+
     }
 }
 
