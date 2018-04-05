@@ -8,15 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.abdul_wadudmusa.drawer.model.Article;
+import com.example.abdul_wadudmusa.drawer.model.ResponseLogin;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<NewsAdapter>{
-    ArrayList<News> ListOfNews;
+    ArrayList<Article> ListOfNews;
     Context context;
 
-    public RecyclerAdapter(ArrayList<News> listOfNews, Context context) {
+    public RecyclerAdapter(ArrayList<Article> listOfNews, Context context) {
         ListOfNews = listOfNews;
         this.context = context;
     }
@@ -33,12 +35,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<NewsAdapter>{
             @Override
             public void onClick(View v) {
                 Intent webpage=new Intent(Intent.ACTION_VIEW);
-                webpage.setData(Uri.parse(ListOfNews.get(position).getWebpage()));
+                webpage.setData(Uri.parse(ListOfNews.get(position).getUrl()));
                 context.startActivity(webpage);
             }
         });
-        holder.mContent.setText(ListOfNews.get(position).getTopic());
-        Picasso.with(context).load(ListOfNews.get(position).getImageUrl()).into(holder.mImage);
+        holder.mContent.setText(ListOfNews.get(position).getTitle());
+        Picasso.with(context).load(ListOfNews.get(position).getUrlToImage()).into(holder.mImage);
 
 
     }
